@@ -52,25 +52,25 @@ if (command === "movie-this") {
             movieName += nodeArgs[i];
 
         }
-    }
-
-    if (movieName === "") {
+        
+        if (movieName === "") {
 
         movieName = "Mr. Nobody";
+        }
+        
     }
 
+    
 
-    var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=trilogy";
+
+    var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=&plot=short&apikey=7c887434";
 
     request(queryUrl, function (error, response, body) {
 
         if (!error && response.statusCode === 200) {
 
-            // console.log(body);
+            console.log(body);
 
-            //* Title of the movie.
-            //* Year the movie came out.
-            //* IMDB Rating of the movie.
 
             for (i = 0; i < JSON.parse(body).Ratings.length; i++) {
 
@@ -86,24 +86,28 @@ if (command === "movie-this") {
                 }
 
             }
-            //* Rotten Tomatoes Rating of the movie.
-            //* Country where the movie was produced
-            //* Language of the movie.
-            //* Plot of the movie.
-            //* Actors in the movie.
+
+            // //* Title of the movie.
+            // //* Year the movie came out.
+            // //* IMDB Rating of the movie.
+            // //* Rotten Tomatoes Rating of the movie.
+            // //* Country where the movie was produced
+            // //* Language of the movie.
+            // //* Plot of the movie.
+            // //* Actors in the movie.
 
             console.log(`
 
-        *Movie Title: ${JSON.parse(body).Title}
-        *Release Year: ${JSON.parse(body).Year}
-        *IMBD Rating: ${IMBDrating}
-        *Rotten Tomatoes Rating: ${RottenTomatoes}
-        *Produced In: ${JSON.parse(body).Country}
-        *Language: ${JSON.parse(body).Language}
-        *Plot: ${JSON.parse(body).Plot}
-        *Actors: ${JSON.parse(body).Actors}
+                *Movie Title: ${JSON.parse(body).Title}
+                *Release Year: ${JSON.parse(body).Year}
+                *IMBD Rating: ${IMBDrating}
+                *Rotten Tomatoes Rating: ${RottenTomatoes}
+                *Produced In: ${JSON.parse(body).Country}
+                *Language: ${JSON.parse(body).Language}
+                *Plot: ${JSON.parse(body).Plot}
+                *Actors: ${JSON.parse(body).Actors}
         
-        `);
+            `);
 
 
 

@@ -7,6 +7,7 @@ var keys = require("./key.js")
 var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
 var moment = require("moment");
+var fs = require("fs");
 
 
 
@@ -198,58 +199,62 @@ if (command === "movie-this") {
             var currentCity = concertInfo[0];
 
             // console.log(concertInfo);
+
+            //Name of the venue
+            //Venue location
+            //Date of the Event (use moment to format this as "MM/DD/YYYY")
+
             console.log(`
             Name of Venue: ${currentCity.venue.name}
             Venue Location: ${currentCity.venue.city}
-            Date of the Event: ${moment(currentCity.venue.datetime).format('LLLL')}
+            Date of the Event: ${moment(currentCity.venue.datetime).format('MM DD YYYY')}
+            \n------------------------------------------------------------\n\n
             
             `);
         }
 
     })
 
-    //Name of the venue
-    //Venue location
-    //Date of the Event (use moment to format this as "MM/DD/YYYY")
+    
 
 
 
 }
 
 
-// if (command === "do-what-it-says") {
+if (command === "do-what-it-says") {
 	
-// 	fs.readFile("random.txt", "utf8", function(error, data) {
+	fs.readFile("random.txt", "utf8", function(error, data) {
 
-// 		if (error) {
-// 			return console.log(error);
-// 		}
+		if (error) {
+			return console.log(error);
+		}
 		
-// 		var nameArr = data.split(",");
+		var textArray = data.split(",");
 		
 
-// 		name = nameArr[1]
-// 		// console.log(name);
+		text = textArray[1];
+		// console.log(name);
 
-// 		spotify.search({ type: 'track', query: name, limit: 1 }, function(err, data) {
-// 			if (err) {
-// 				return console.log('Error occurred: ' + err);
-// 			}
+		spotify.search({ type: 'track', query: text, limit: 1 }, function(err, data) {
+			if (err) {
+				console.log('Error occurred: ' + err);
+			}
 			
-// 			// console.log(JSON.stringify(data, null, 2));
-// 			// console.log(data);
-// 			var songInfo = data.tracks.items[0];
-// 			console.log(` 
-//                 Artist:  ${track.artists[0].name} 
-//                 Song Title: ${name}
-// 				Album:  ${track.album.name} 
-// 				Preview Link: ${track.preview_url} 
-// 				\n------------------------------------------------------------\n\n
-// 			`);
-// 		})
+			// console.log(JSON.stringify(data, null, 2));
+			// console.log(data);
+			var songInfo = data.tracks.items[0];
+			console.log(` 
+            Artist(s): ${songInfo.artists[0].name}
+            Song Title: ${songInfo.name}
+            Link: ${songInfo.preview_url}
+            Album: ${songInfo.album.name}
+				\n------------------------------------------------------------\n\n
+			`);
+		})
 
-// 	});
-// }
+	});
+}
 
 
 

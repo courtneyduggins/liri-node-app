@@ -6,6 +6,8 @@ var command = process.argv[2];
 var keys = require("./key.js")
 var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
+var moment = require("moment");
+
 
 
 // console.log(command);
@@ -105,7 +107,7 @@ if (command === "movie-this") {
 
     });
 
-//perform search if command is "spotify-this-song"....    
+    //perform search if command is "spotify-this-song"....    
 
 } else if (command === "spotify-this-song") {
 
@@ -145,18 +147,109 @@ if (command === "movie-this") {
 
             console.log(`
             
-            Song Title: ${songInfo.name}
             Artist(s): ${songInfo.artists[0].name}
-            
+            Song Title: ${songInfo.name}
+            Link: ${songInfo.preview_url}
+            Album: ${songInfo.album.name}
+            \n------------------------------------------------------------\n\n
             
             `);
         }
 
-          
+
     });
+
+    //perform search if command is concert-this...
+
+} else if (command === "concert-this") {
+
+    var bandName = "";
+
+    for (var i = 3; i < process.argv.length; i++) {
+
+        if (i > 3 && i < process.argv.length) {
+
+            bandName = bandName + "+" + process.argv[i];
+
+        }
+
+        else {
+
+            bandName += process.argv[i];
+
+        }
+    }
+
+    if (!bandName) {
+
+        bandName = "Ace of Base";
+    }
+
+
+    var queryUrl = "https://rest.bandsintown.com/artists/" + bandName + "/events?app_id=codingbootcamp"
+
+    console.log(queryUrl);
+
+    request(queryUrl, function(error, response, body){
+
+        if(!error && response.statusCode=== 200){
+
+            var concertInfo = JSON.parse(body);
+            var currentCity = concertInfo[0];
+
+            // console.log(concertInfo);
+            console.log(`
+            Name of Venue: ${currentCity.venue.name}
+            Venue Location: ${currentCity.venue.city}
+            Date of the Event: ${moment(currentCity.venue.datetime).format('LLLL')}
+            
+            `);
+        }
+
+    })
+
+    //Name of the venue
+    //Venue location
+    //Date of the Event (use moment to format this as "MM/DD/YYYY")
+
+
 
 }
 
+
+// if (command === "do-what-it-says") {
+	
+// 	fs.readFile("random.txt", "utf8", function(error, data) {
+
+// 		if (error) {
+// 			return console.log(error);
+// 		}
+		
+// 		var nameArr = data.split(",");
+		
+
+// 		name = nameArr[1]
+// 		// console.log(name);
+
+// 		spotify.search({ type: 'track', query: name, limit: 1 }, function(err, data) {
+// 			if (err) {
+// 				return console.log('Error occurred: ' + err);
+// 			}
+			
+// 			// console.log(JSON.stringify(data, null, 2));
+// 			// console.log(data);
+// 			var songInfo = data.tracks.items[0];
+// 			console.log(` 
+//                 Artist:  ${track.artists[0].name} 
+//                 Song Title: ${name}
+// 				Album:  ${track.album.name} 
+// 				Preview Link: ${track.preview_url} 
+// 				\n------------------------------------------------------------\n\n
+// 			`);
+// 		})
+
+// 	});
+// }
 
 
 

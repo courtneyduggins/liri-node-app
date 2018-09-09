@@ -10,6 +10,7 @@ var moment = require("moment");
 var fs = require("fs");
 
 
+
 // console.log(command);
 
 
@@ -23,7 +24,8 @@ if (command === "movie-this") {
 
     var movieName = "";
 
-
+    // Loop through all the words in the node argument
+    // And do a little for-loop magic to handle the inclusion of "+"s
     for (var i = 3; i < process.argv.length; i++) {
 
         if (i > 3 && i < process.argv.length) {
@@ -158,10 +160,9 @@ if (command === "movie-this") {
 
     });
 
-}
     //perform search if command is concert-this...
 
-else if (command === "concert-this") {
+} else if (command === "concert-this") {
 
     var bandName = "";
 
@@ -220,8 +221,8 @@ else if (command === "concert-this") {
 
 }
 
-//performs search if command is do-what-it-says...
-else if (command === "do-what-it-says") {
+
+if (command === "do-what-it-says") {
 
     fs.readFile("random.txt", "utf8", function (error, data) {
 
@@ -254,7 +255,6 @@ else if (command === "do-what-it-says") {
 
     });
 }
-
 
 
 

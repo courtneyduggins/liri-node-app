@@ -10,6 +10,7 @@ var moment = require("moment");
 var fs = require("fs");
 
 
+
 // console.log(command);
 
 
@@ -23,7 +24,8 @@ if (command === "movie-this") {
 
     var movieName = "";
 
-
+    // Loop through all the words in the node argument
+    // And do a little for-loop magic to handle the inclusion of "+"s
     for (var i = 3; i < process.argv.length; i++) {
 
         if (i > 3 && i < process.argv.length) {
@@ -158,10 +160,9 @@ if (command === "movie-this") {
 
     });
 
-}
     //perform search if command is concert-this...
 
-else if (command === "concert-this") {
+} else if (command === "concert-this") {
 
     var bandName = "";
 
@@ -190,9 +191,9 @@ else if (command === "concert-this") {
 
     console.log(queryUrl);
 
-    request(queryUrl, function (error, response, body) {
+    request(queryUrl, function(error, response, body){
 
-        if (!error && response.statusCode === 200) {
+        if(!error && response.statusCode=== 200){
 
             var concertInfo = JSON.parse(body);
             var currentCity = concertInfo[0];
@@ -214,45 +215,45 @@ else if (command === "concert-this") {
 
     })
 
-
+    
 
 
 
 }
 
-//performs search if command is do-what-it-says...
-else if (command === "do-what-it-says") {
 
-    fs.readFile("random.txt", "utf8", function (error, data) {
+if (command === "do-what-it-says") {
+	
+	fs.readFile("random.txt", "utf8", function(error, data) {
 
-        if (error) {
-            return console.log(error);
-        }
+		if (error) {
+			return console.log(error);
+		}
+		
+		var textArray = data.split(",");
+		
 
-        var textArray = data.split(",");
+		text = textArray[1];
+		// console.log(name);
 
-
-        text = textArray[1];
-        // console.log(name);
-
-        spotify.search({ type: 'track', query: text, limit: 1 }, function (err, data) {
-            if (err) {
-                console.log('Error occurred: ' + err);
-            }
-
-            // console.log(JSON.stringify(data, null, 2));
-            // console.log(data);
-            var songInfo = data.tracks.items[0];
-            console.log(` 
+		spotify.search({ type: 'track', query: text, limit: 1 }, function(err, data) {
+			if (err) {
+				console.log('Error occurred: ' + err);
+			}
+			
+			// console.log(JSON.stringify(data, null, 2));
+			// console.log(data);
+			var songInfo = data.tracks.items[0];
+			console.log(` 
             Artist(s): ${songInfo.artists[0].name}
             Song Title: ${songInfo.name}
             Link: ${songInfo.preview_url}
             Album: ${songInfo.album.name}
 				\n------------------------------------------------------------\n\n
 			`);
-        })
+		})
 
-    });
+	});
 }
 
 
